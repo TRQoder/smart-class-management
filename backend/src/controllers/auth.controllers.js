@@ -117,7 +117,8 @@ const registerStudent = async (req, res) => {
 
     if (existingStudent) {
       return res.status(400).json({
-        message: "Student with given email/registration/phone already exists.",
+        success: false,
+        message: "Student already exists.",
       });
     }
 
@@ -140,7 +141,7 @@ const registerStudent = async (req, res) => {
     const token = jwt.sign({ id: student._id }, process.env.JWT_SECRET, {
       expiresIn: "7d", // token expires in 7 days
     });
-    
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // use secure cookies in production
