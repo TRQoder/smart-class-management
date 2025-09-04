@@ -6,6 +6,7 @@ const router = require("express").Router();
 /* 
 POST /api/auth/register
 POST /api/auth/login 
+GET /api/auth/check-auth (protected)
 */
 
 // routes
