@@ -1,7 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const authRoutes = require('./routes/auth.routes');
 const app = express();
+
+
 
 // Load environment variables
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
@@ -22,5 +25,6 @@ app.get('/', (req, res) => {
 });
 
 //routes
+app.use('/api/auth', authRoutes);
 
 module.exports = app;
