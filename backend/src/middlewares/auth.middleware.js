@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const studentModel = require("../models/student.model");
+const facultyModel = require("../models/faculty.model");
+const adminModel = require("../models/admin.model");
 const authMiddleware = async (req, res, next) => {
   try {
     const token = req.cookies.token;
@@ -13,20 +15,11 @@ const authMiddleware = async (req, res, next) => {
     // Decode token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    let user = null;
-
     // Try finding in each model
-    user = await studentModel.findById(decoded.id).select("-password");
-    if (!user)
-      user = await facultyModel.findById(decoded.id).select("-password");
-    if (!user) user = await adminModel.findById(decoded.id).select("-password");
-
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: "User not found, authorization denied",
-      });
-    }
+    let user;
+    if (decoded.role === "STUDENT") user = await studentModel.findById(decoded.id);
+    else if (decoded.role === "FACULTY") user = await facultyModel.findById(decoded.id);
+    else if (decoded.role === "ADMIN") user = await adminModel.findById(decoded.id);
 
     // Attach user
     req.user = user;

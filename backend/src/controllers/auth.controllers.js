@@ -33,7 +33,7 @@ const login = async (req, res) => {
     }
 
     // 4. Generate token
-    const token = jwt.sign({ id: student._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: student._id ,role:student.role}, process.env.JWT_SECRET, {
       expiresIn: "7d", // token expires in 7 days
     });
 
@@ -138,7 +138,7 @@ const registerStudent = async (req, res) => {
       password: hashedPassword,
     });
 
-    const token = jwt.sign({ id: student._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: newStudent._id , role:newStudent.role}, process.env.JWT_SECRET, {
       expiresIn: "7d", // token expires in 7 days
     });
 
