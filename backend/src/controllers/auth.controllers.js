@@ -176,7 +176,24 @@ const registerStudent = async (req, res) => {
   }
 };
 
+// check auth
+const checkAuth = (req, res) => {
+  const user = req.user;
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      message: "Not authorized",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    message: "Authorized user",
+    user,
+  });
+};
+
 module.exports = {
   login,
   registerStudent,
+  checkAuth,
 };
