@@ -6,7 +6,7 @@ function NotFound() {
     const navigate = useNavigate();
 
     const handleRedirect = () => {
-        navigate('/'); // Redirect to main home page or login
+        navigate('/auth/login'); // Redirect to main home page or login
     };
 
     return (

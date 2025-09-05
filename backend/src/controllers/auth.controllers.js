@@ -33,9 +33,13 @@ const login = async (req, res) => {
     }
 
     // 4. Generate token
-    const token = jwt.sign({ id: student._id ,role:student.role}, process.env.JWT_SECRET, {
-      expiresIn: "7d", // token expires in 7 days
-    });
+    const token = jwt.sign(
+      { id: student._id, role: student.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d", // token expires in 7 days
+      }
+    );
 
     // 5. Set cookie
     res.cookie("token", token, {
@@ -94,6 +98,7 @@ const registerStudent = async (req, res) => {
       !email ||
       !rollNumber ||
       !registrationNumber ||
+      !phoneNumber ||
       !department ||
       !semester ||
       !batch ||
@@ -107,13 +112,14 @@ const registerStudent = async (req, res) => {
     }
 
     // 2. Check if student already exists
-    const existingStudent = await studentModel.findOne({
-      $or: [
-        { email },
-        { registrationNumber },
-        phoneNumber ? { phoneNumber } : {}, // only check phone if provided
-      ],
-    });
+    const orQuery = [{ email }, { registrationNumber }];
+    if (phoneNumber) orQuery.push({ phoneNumber });
+
+    const existingStudent = await studentModel.findOne({ $or: orQuery });
+
+    // const existingStudent = await studentModel.findOne({
+    //   $or: [{ email }, { registrationNumber }, { phoneNumber }],
+    // });
 
     if (existingStudent) {
       return res.status(400).json({
@@ -132,15 +138,19 @@ const registerStudent = async (req, res) => {
       registrationNumber,
       phoneNumber,
       department,
-      semester,
+      semester: Number(semester),
       batch,
       section,
       password: hashedPassword,
     });
 
-    const token = jwt.sign({ id: newStudent._id , role:newStudent.role}, process.env.JWT_SECRET, {
-      expiresIn: "7d", // token expires in 7 days
-    });
+    const token = jwt.sign(
+      { id: newStudent._id, role: newStudent.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d", // token expires in 7 days
+      }
+    );
 
     res.cookie("token", token, {
       httpOnly: true,

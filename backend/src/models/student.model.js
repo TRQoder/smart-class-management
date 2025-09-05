@@ -37,6 +37,7 @@ const studentSchema = new mongoose.Schema({
     type: String,
     trim: true,
     unique: true,
+    required: true,
   },
 
   department: {
