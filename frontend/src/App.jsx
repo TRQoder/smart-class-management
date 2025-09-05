@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
-import AuthLogin from './pages/auth/login'
-import AuthRegister from './pages/auth/register'
+// import AuthLogin from './pages/auth/login'
+// import AuthRegister from './pages/auth/register'
 
 // import CheckAuth from './components/common/check-auth'
 // import UnauthPage from './pages/unauth-page'
@@ -23,6 +23,8 @@ import AdminLayout from './components/admin-view/AdminLayout'
 import AuthLayout from './components/auth/AuthLayout'
 import StudentLayout from './components/student-view/StudentLayout'
 import StudentHome from './pages/student-view/StudentHome'
+import Login from './pages/auth/Login'
+import Register from './pages/auth/Register'
 
 function App() {
 
@@ -48,8 +50,8 @@ function App() {
             <AuthLayout />
           </CheckAuth>
         }  >
-          <Route path="login" element={<AuthLogin />} />
-          <Route path="register" element={<AuthRegister />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Route>
 
         <Route path='/admin' element={
